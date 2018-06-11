@@ -1,0 +1,49 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-16.04
+
+suites:
+  - name: stable
+    run_list:
+      - recipe[ngx::default]
+    attributes: {
+      ngx: {
+        install: 'stable',
+        with_openssl: true,
+        with_http2: true,
+        with_ipv6: true,
+        with_ct: true,
+        with_headers_more: true,
+        with_status: true,
+        with_realip: true,
+        with_geoip2: true,
+        with_secure_link: true,
+        with_njs: true,
+        with_debug: true
+      }
+    }
+  - name: mainline
+    run_list:
+      - recipe[ngx::default]
+    attributes: {
+      ngx: {
+        install: 'mainline',
+        with_openssl: true,
+        with_http2: true,
+        with_ipv6: true,
+        with_ct: true,
+        with_headers_more: true,
+        with_status: true,
+        with_realip: true,
+        with_geoip2: true,
+        with_secure_link: true,
+        with_njs: true,
+        with_debug: true
+      }
+    }
