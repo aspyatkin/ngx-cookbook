@@ -21,6 +21,7 @@ Additionally, the following attributes may be utilised so as to compile nginx wi
 - `node['ngx']['with_secure_link']` - [ngx_http_secure_link_module](https://nginx.org/en/docs/http/ngx_http_secure_link_module.html), default `false`
 - `node['ngx']['with_njs']` - [ngx_http_js_module](http://nginx.org/en/docs/http/ngx_http_js_module.html), default `false`
 - `node['ngx']['with_debug']` - [debugging support](https://nginx.ru/en/docs/debugging_log.html), default `false`
+- `node['ngx']['with_devel_kit']` - [ngx_devel_kit](https://github.com/simplresty/ngx_devel_kit), default `false`
 
 ## Testing
 Run `script/bootstrap` to install necessary Ruby Gems.

@@ -19,7 +19,7 @@ GRAPH
     ohai (>= 4.1.0)
     yum-epel (>= 0.0.0)
     zypper (>= 0.0.0)
-  ngx (1.0.0)
+  ngx (1.0.1)
     dhparam (~> 1.0.0)
     libmaxminddb (~> 1.0.0)
     logrotate (~> 2.2.0)

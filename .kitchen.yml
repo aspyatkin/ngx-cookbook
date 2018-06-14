@@ -12,6 +12,7 @@ suites:
   - name: stable
     run_list:
       - recipe[ngx::default]
+      - recipe[ngx::test]
     attributes: {
       ngx: {
         install: 'stable',
@@ -25,12 +26,14 @@ suites:
         with_geoip2: true,
         with_secure_link: true,
         with_njs: true,
-        with_debug: true
+        with_debug: true,
+        with_devel_kit: true
       }
     }
   - name: mainline
     run_list:
       - recipe[ngx::default]
+      - recipe[ngx::test]
     attributes: {
       ngx: {
         install: 'mainline',
@@ -44,6 +47,7 @@ suites:
         with_geoip2: true,
         with_secure_link: true,
         with_njs: true,
-        with_debug: true
+        with_debug: true,
+        with_devel_kit: true
       }
     }

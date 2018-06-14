@@ -21,3 +21,4 @@ default[id]['with_geoip2'] = false
 default[id]['with_secure_link'] = false
 default[id]['with_njs'] = false
 default[id]['with_debug'] = false
+default[id]['with_devel_kit'] = false

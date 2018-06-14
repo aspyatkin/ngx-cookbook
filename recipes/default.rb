@@ -40,6 +40,14 @@ module_list << "#{id}::ngx_secure_link_module" if node[id]['with_secure_link']
 module_list << "#{id}::ngx_njs_module" if node[id]['with_njs']
 module_list << "#{id}::ngx_debug_module" if node[id]['with_debug']
 
+if node[id]['with_devel_kit']
+  node.default['nginx']['devel']['version'] = node[id]['devel_kit']['version']
+  node.default['nginx']['devel']['url'] = \
+    "https://github.com/simpl/ngx_devel_kit/archive/v#{node['nginx']['devel']['version']}.tar.gz"
+  node.default['nginx']['devel']['checksum'] = node[id]['devel_kit']['checksum']
+  module_list << 'nginx::ngx_devel_module'
+end
+
 node.default['nginx']['source']['modules'] = module_list
 node.default['nginx']['source']['use_existing_user'] = false
 
