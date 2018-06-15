@@ -27,7 +27,7 @@ suites:
         with_secure_link: true,
         with_njs: true,
         with_debug: true,
-        with_devel_kit: true
+        with_lua: true
       }
     }
   - name: mainline
@@ -48,6 +48,6 @@ suites:
         with_secure_link: true,
         with_njs: true,
         with_debug: true,
-        with_devel_kit: true
+        with_lua: true
       }
     }

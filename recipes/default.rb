@@ -40,12 +40,30 @@ module_list << "#{id}::ngx_secure_link_module" if node[id]['with_secure_link']
 module_list << "#{id}::ngx_njs_module" if node[id]['with_njs']
 module_list << "#{id}::ngx_debug_module" if node[id]['with_debug']
 
+if node[id]['with_lua']
+  node.default['with_devel_kit'] = true
+end
+
 if node[id]['with_devel_kit']
   node.default['nginx']['devel']['version'] = node[id]['devel_kit']['version']
   node.default['nginx']['devel']['url'] = \
     "https://github.com/simpl/ngx_devel_kit/archive/v#{node['nginx']['devel']['version']}.tar.gz"
   node.default['nginx']['devel']['checksum'] = node[id]['devel_kit']['checksum']
   module_list << 'nginx::ngx_devel_module'
+end
+
+if node[id]['with_lua']
+  node.default['nginx']['luajit']['version'] = node[id]['luajit']['version']
+  node.default['nginx']['luajit']['url'] = \
+    "http://luajit.org/download/LuaJIT-#{node['nginx']['luajit']['version']}.tar.gz"
+  node.default['nginx']['luajit']['checksum'] = node[id]['luajit']['checksum']
+
+  node.default['nginx']['lua']['version'] = node[id]['lua']['version']
+  node.default['nginx']['lua']['url'] = \
+    "https://github.com/openresty/lua-nginx-module/archive/v#{node['nginx']['lua']['version']}.tar.gz"
+  node.default['nginx']['lua']['checksum'] = node[id]['lua']['checksum']
+
+  module_list << 'nginx::ngx_lua_module'
 end
 
 node.default['nginx']['source']['modules'] = module_list
