@@ -2,7 +2,7 @@ name 'ngx'
 maintainer 'Alexander Pyatkin'
 maintainer_email 'aspyatkin@gmail.com'
 license 'MIT'
-version '1.0.2'
+version '1.0.3'
 description 'Install and configure Nginx'
 
 recipe 'ngx::default', 'Install and configure Nginx'

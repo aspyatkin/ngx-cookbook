@@ -72,6 +72,15 @@ node.default['nginx']['source']['use_existing_user'] = false
 node.default['nginx']['server_tokens'] = 'off'
 node.default['nginx']['default_site_enabled'] = false
 
+node.default['nginx']['access_log_options'] = 'main_ext'
+node.default['nginx']['error_log_options'] = 'warn'
+
+main_ext_log_format = %Q('$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for" "$host" sn="$server_name" rt=$request_time ua="$upstream_addr" us="$upstream_status" ut="$upstream_response_time" ul="$upstream_response_length" cs=$upstream_cache_status')
+
+node.default['nginx']['log_formats'] = {
+  'main_ext' => main_ext_log_format
+}
+
 if node[id]['with_headers_more']
   node.default['nginx']['headers_more']['version'] = \
     node[id]['headers_more']['version']
