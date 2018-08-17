@@ -13,8 +13,8 @@ Additionally, the following attributes may be utilised so as to compile nginx wi
 - `node['ngx']['with_openssl']` - [ngx_http_ssl_module](https://nginx.ru/en/docs/http/ngx_http_ssl_module.html) with openssl built from source, default `true`;
 - `node['ngx']['with_http2']` - [ngx_http_v2_module](https://nginx.ru/en/docs/http/ngx_http_v2_module.html), default `true`;
 - `node['ngx']['with_ipv6']` - IPv6 support, default `true`;
-- `node['ngx']['with_ct']` - [nginx-ct module](https://github.com/grahamedgecombe/nginx-ct), default `true`;
-- `node['ngx']['with_headers_more']` - [ngx_headers_more module](https://github.com/openresty/headers-more-nginx-module), default `true`;
+- `node['ngx']['with_ct']` - [nginx-ct module](https://github.com/grahamedgecombe/nginx-ct), default `false`;
+- `node['ngx']['with_headers_more']` - [ngx_headers_more module](https://github.com/openresty/headers-more-nginx-module), default `false`;
 - `node['ngx']['with_status']` - [ngx_http_stub_status_module](ngx_http_stub_status_module), default `false`;
 - `node['ngx']['with_realip']` - [ngx_http_realip_module](https://nginx.ru/en/docs/http/ngx_http_realip_module.html), default `false`;
 - `node['ngx']['with_geoip2']` - [ngx_http_geoip2_module](https://github.com/leev/ngx_http_geoip2_module), default `false`;

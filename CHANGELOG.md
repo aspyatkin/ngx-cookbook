@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2018-08-17
+### Changed
+- Update nginx mainline version to 1.15.2.
+- Update njs version to 0.2.3.
+- Update OpenSSL version to 1.1.0i.
+- Update `ngx_http_geoip2_module` version to 3.0.
+- `with_ct` option is now `false` by default.
+- `with_headers_more` option is now `false` by default.
+
 ## [1.0.3] - 2018-08-05
 ### Added
 - Add `main_ext` log format (suitable for Nginx Amplify agent)
