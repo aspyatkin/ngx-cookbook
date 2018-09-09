@@ -11,10 +11,10 @@ default[id]['geoip2']['databases']['country']['name'] = 'GeoLite2-Country.mmdb'
 default[id]['geoip2']['databases']['country']['url'] = \
   'http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz'
 default[id]['geoip2']['databases']['country']['checksum'] = \
-  '5f9565ab2ce331a1903789e0619946f23482b02fcafd8257c2f808626394b00f'
+  'e5acb422d3a09c3ccbd55b98a0bf926e402dd9cd086d9b70f5d5f7524a8f3676'
 
 default[id]['geoip2']['databases']['city']['name'] = 'GeoLite2-City.mmdb'
 default[id]['geoip2']['databases']['city']['url'] = \
   'http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz'
 default[id]['geoip2']['databases']['city']['checksum'] = \
-  'e367bf5084b5598e48c2eb655220945889daa8e7eff6c531e2b661bc32456701'
+  'c68df20de81f738f047d2ff235c51bae09fc0e83e856aa4a4729b482dd420c5c'

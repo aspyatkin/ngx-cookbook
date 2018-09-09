@@ -6,9 +6,9 @@ default[id]['stable']['version'] = '1.14.0'
 default[id]['stable']['checksum'] = \
   '5d15becbf69aba1fe33f8d416d97edd95ea8919ea9ac519eff9bafebb6022cb5'
 
-default[id]['mainline']['version'] = '1.15.2'
+default[id]['mainline']['version'] = '1.15.3'
 default[id]['mainline']['checksum'] = \
-  'eeba09aecfbe8277ac33a5a2486ec2d6731739f3c1c701b42a0c3784af67ad90'
+  '9391fb91c3e2ebd040a4e3ac2b2f0893deb6232edc30a8e16fcc9c3fa9d6be85'
 
 default[id]['with_openssl'] = true
 default[id]['with_http2'] = true
