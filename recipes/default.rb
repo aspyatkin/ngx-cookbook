@@ -2,9 +2,10 @@ id = 'ngx'
 
 node.default['nginx']['install_method'] = 'source'
 
-node.default['nginx']['version'] = node[id][node[id]['install']]['version']
+ngx_version = node[id][node[id]['install']]['version']
+node.default['nginx']['version'] = ngx_version
 
-node.default['nginx']['source']['version'] = node['nginx']['version']
+node.default['nginx']['source']['version'] = ngx_version
 node.default['nginx']['source']['prefix'] = \
   "/opt/nginx-#{node['nginx']['source']['version']}"
 node.default['nginx']['source']['conf_path'] = \
@@ -23,6 +24,10 @@ node.default['nginx']['source']['url'] = \
 node.default['nginx']['source']['checksum'] = \
   node[id][node[id]['install']]['checksum']
 
+log "#{node[id][node[id]['install']]['version']} #{node['nginx']['source']['version']} #{node['nginx']['source']['checksum']}" do
+  level :warn
+end
+
 module_list = %w(
   nginx::http_gzip_static_module
 )
@@ -33,11 +38,12 @@ module_list << 'nginx::http_v2_module' if node[id]['with_http2'] && node[id]['wi
 module_list << 'nginx::ipv6' if node[id]['with_ipv6']
 module_list << 'nginx::http_stub_status_module' if node[id]['with_status']
 module_list << 'nginx::headers_more_module' if node[id]['with_headers_more']
-module_list << "#{id}::ngx_ct_module" if node[id]['with_ct']
 module_list << 'nginx::http_realip_module' if node[id]['with_realip']
 module_list << "#{id}::ngx_geoip2_module" if node[id]['with_geoip2']
 module_list << "#{id}::ngx_secure_link_module" if node[id]['with_secure_link']
 module_list << "#{id}::ngx_njs_module" if node[id]['with_njs']
+module_list << 'nginx::http_gzip_static_module' if node[id]['with_gzip_static']
+module_list << "#{id}::ngx_brotli_module" if node[id]['with_brotli']
 module_list << "#{id}::ngx_debug_module" if node[id]['with_debug']
 
 if node[id]['with_lua']
@@ -72,13 +78,13 @@ node.default['nginx']['source']['use_existing_user'] = false
 node.default['nginx']['server_tokens'] = 'off'
 node.default['nginx']['default_site_enabled'] = false
 
-node.default['nginx']['access_log_options'] = 'main_ext'
+node.default['nginx']['access_log_options'] = 'combined_ext'
 node.default['nginx']['error_log_options'] = 'warn'
 
-main_ext_log_format = %Q('$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for" "$host" sn="$server_name" rt=$request_time ua="$upstream_addr" us="$upstream_status" ut="$upstream_response_time" ul="$upstream_response_length" cs=$upstream_cache_status')
+combined_ext_log_format = %Q('$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for" "$host" sn="$server_name" rt=$request_time ua="$upstream_addr" us="$upstream_status" ut="$upstream_response_time" ul="$upstream_response_length" cs=$upstream_cache_status')
 
 node.default['nginx']['log_formats'] = {
-  'main_ext' => main_ext_log_format
+  'combined_ext' => combined_ext_log_format
 }
 
 if node[id]['with_headers_more']

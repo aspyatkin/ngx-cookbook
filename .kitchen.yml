@@ -5,7 +5,7 @@ driver:
 
 provisioner:
   name: chef_solo
-  require_chef_omnibus: 12
+  require_chef_omnibus: 14
 
 platforms:
   - name: ubuntu-16.04
@@ -22,13 +22,14 @@ suites:
         with_openssl: true,
         with_http2: true,
         with_ipv6: true,
-        with_ct: true,
         with_headers_more: true,
         with_status: true,
         with_realip: true,
         with_geoip2: true,
         with_secure_link: true,
         with_njs: true,
+        with_gzip_static: true,
+        with_brotli: true,
         with_debug: true,
         with_lua: true
       }
@@ -43,13 +44,14 @@ suites:
         with_openssl: true,
         with_http2: true,
         with_ipv6: true,
-        with_ct: true,
         with_headers_more: true,
         with_status: true,
         with_realip: true,
         with_geoip2: true,
         with_secure_link: true,
         with_njs: true,
+        with_gzip_static: true,
+        with_brotli: true,
         with_debug: true,
         with_lua: true
       }

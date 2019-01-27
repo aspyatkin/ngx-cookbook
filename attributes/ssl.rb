@@ -1,7 +1,7 @@
 id = 'ngx'
 
-default[id]['openssl']['version'] = '1.1.0i'
+default[id]['openssl']['version'] = '1.1.0j'
 default[id]['openssl']['checksum'] = \
-  'ebbfc844a8c8cc0ea5dc10b86c9ce97f401837f3fa08c17b2cdadc118253cf99'
+  '31bec6c203ce1a8e93d5994f4ed304c63ccf07676118b6634edded12ad1b3246'
 
 default[id]['ssl_configuration'] = 'modern' # or intermediate
