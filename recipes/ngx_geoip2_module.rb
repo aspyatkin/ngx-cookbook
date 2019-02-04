@@ -1,3 +1,6 @@
+require 'net/http'
+require 'digest/md5'
+
 id = 'ngx'
 
 include_recipe 'libmaxminddb::default'
@@ -36,7 +39,18 @@ country_database_tarball_path = ::File.join(
 )
 remote_file country_database_tarball_path do
   source node[id]['geoip2']['databases']['country']['url']
-  checksum node[id]['geoip2']['databases']['country']['checksum']
+  use_conditional_get true
+  use_etag true
+  use_last_modified true
+  verify do |path|
+    uri = URI(node[id]['geoip2']['databases']['country']['checksum_url'])
+    res = Net::HTTP.get_response(uri)
+    if res.is_a?(Net::HTTPSuccess)
+      next res.body == Digest::MD5.file(path).hexdigest
+    else
+      next false
+    end
+  end
   mode 0644
 end
 
@@ -47,7 +61,18 @@ city_database_tarball_path = ::File.join(
 )
 remote_file city_database_tarball_path do
   source node[id]['geoip2']['databases']['city']['url']
-  checksum node[id]['geoip2']['databases']['city']['checksum']
+  use_conditional_get true
+  use_etag true
+  use_last_modified true
+  verify do |path|
+    uri = URI(node[id]['geoip2']['databases']['city']['checksum_url'])
+    res = Net::HTTP.get_response(uri)
+    if res.is_a?(Net::HTTPSuccess)
+      next res.body == Digest::MD5.file(path).hexdigest
+    else
+      next false
+    end
+  end
   mode 0644
 end
 
