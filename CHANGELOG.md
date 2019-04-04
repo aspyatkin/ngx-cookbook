@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2019-04-04
+### Changed
+Major redesign. From now on this cookbook does not wrap [nginx](https://github.com/sous-chefs/nginx) cookbook and provides a set of LWRPs instead.
+
 ## [1.2.1] - 2019-02-04
 ### Changed
 - Ensure GeoLite2 databases are always up-to-date.

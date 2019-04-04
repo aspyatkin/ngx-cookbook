@@ -1,0 +1,15 @@
+user <%= @user %> <%= @group %>;
+daemon off;
+
+error_log <%= @error_log %><%= @error_log_options.nil? ? '' : " #{@error_log_options}" %>;
+pid <%= @pid %>;
+
+events {
+}
+
+http {
+  default_type application/octet-stream;
+  include <%= @conf_dir %>/mime.types;
+  include <%= @conf_dir %>/conf.d/*.conf;
+  include <%= @conf_dir %>/sites-enabled/*;
+}

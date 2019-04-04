@@ -1,34 +1,73 @@
 # ngx cookbook
 [![Chef cookbook](https://img.shields.io/cookbook/v/ngx.svg?style=flat-square)]()
 [![license](https://img.shields.io/github/license/aspyatkin/ngx-cookbook.svg?style=flat-square)]()  
-A cookbook to provide resources to install, configure and run [nginx](http://nginx.org) web server. Wraps [nginx cookbook](https://github.com/chef-cookbooks/nginx).
+Chef cookbook to to install and configure [nginx](http://nginx.org) web server.
 
-## Recipes
+## Concept
 
-### ngx::default
+This cookbook provides a set of [LWRPs](https://chef.readthedocs.io/en/latest/lwrps_custom.html) to install and configure nginx web server, namely `nginx_configure`, `nginx_install`, `nginx_module`, `nginx_conf`, `nginx_include` and `nginx_vhost`. The first three have to do with building nginx from source, the other help with web server configuration. This is a minimal set that should be extended in order to support building nginx with extra modules (both standard and custom ones). One may take a look at [ngx-modules](https://github.com/aspyatkin/ngx-modules-cookbook) repository, which provides examples on how this set can be utilized.
 
-Install nginx from source, either `stable` or `mainline` version (this is specified in `node['ngx']['install']` attribute, which defaults to `stable`).
+## Usage
 
-Additionally, the following attributes may be utilised so as to compile nginx with extra modules/options:  
-- `node['ngx']['with_openssl']` - [ngx_http_ssl_module](https://nginx.ru/en/docs/http/ngx_http_ssl_module.html) with openssl built from source, default `true`;  
-- `node['ngx']['with_http2']` - [ngx_http_v2_module](https://nginx.ru/en/docs/http/ngx_http_v2_module.html), default `true`;  
-- `node['ngx']['with_ipv6']` - IPv6 support, default `true`;  
-- `node['ngx']['with_headers_more']` - [ngx_headers_more module](https://github.com/openresty/headers-more-nginx-module), default `false`;  
-- `node['ngx']['with_status']` - [ngx_http_stub_status_module](ngx_http_stub_status_module), default `false`;  
-- `node['ngx']['with_realip']` - [ngx_http_realip_module](https://nginx.ru/en/docs/http/ngx_http_realip_module.html), default `false`;  
-- `node['ngx']['with_geoip2']` - [ngx_http_geoip2_module](https://github.com/leev/ngx_http_geoip2_module), default `false`;  
-- `node['ngx']['with_secure_link']` - [ngx_http_secure_link_module](https://nginx.org/en/docs/http/ngx_http_secure_link_module.html), default `false`;  
-- `node['ngx']['with_njs']` - [ngx_http_js_module](http://nginx.org/en/docs/http/ngx_http_js_module.html), default `false`;  
-- `node['ngx']['with_gzip_static']` - [ngx_http_gzip_static_module](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html), default `false`;  
-- `node['ngx']['with_brotli']` - [ngx_brotli](https://github.com/eustas/ngx_brotli), default `false`;  
-- `node['ngx']['with_debug']` - [debugging support](https://nginx.ru/en/docs/debugging_log.html), default `false`;  
-- `node['ngx']['with_devel_kit']` - [ngx_devel_kit](https://github.com/simplresty/ngx_devel_kit), default `false`;  
-- `node['ngx']['with_lua']` - [ngx_http_lua_module](https://github.com/openresty/lua-nginx-module), default `false`. If set to `true`, `ngx_devel_kit` will also be installed.
+```ruby
+# instruct Chef to build nginx with http_gzip_static module
+nginx_module 'http_gzip_static' do
+  flags %w[--with-http_gzip_static_module]
+  action :add
+end
 
-## Testing
-Run `script/bootstrap` to install necessary Ruby Gems.
+# install nginx
+nginx_install 'default' do
+  with_ipv6 false
+  with_threads true
+  action :run
+end
 
-Run `script/test` to perform [KitchenCI](http://kitchen.ci/) tests.
+# create http_gzip_static config at /etc/nginx/conf.d
+nginx_conf 'http_gzip_static' do
+  template 'http_gzip_static.conf.erb'
+  action :create
+end
+
+# create an include file at /etc/nginx/includes
+nginx_include 'favicons' do
+  template 'favicons.erb'
+  variables server_name: 'www.acme.corp'
+  action :create
+end
+
+# create a vhost file at /etc/nginx/sites-available
+# enable it by creating a symlink at /etc/nginx/sites-enabled
+nginx_vhost 'acme.corp' do
+  template 'acme.corp.conf.erb'
+end
+```
+
+**templates/default/http_gzip_static.conf.erb**
+```
+gzip_static  on;
+```
+
+**templates/default/favicons.erb**
+```
+location = /favicon.ico {
+  root /path/to/my/favicons;
+}
+```
+
+**templates/default/acme.corp.conf.erb**
+```
+server {
+  server_name <%= @server_name %>;
+  listen 80;
+
+  include /etc/nginx/includes/favicons;
+
+  location / {
+    ...
+  }
+}
+```
 
 ## License
 MIT @ [Alexander Pyatkin](https://github.com/aspyatkin)
