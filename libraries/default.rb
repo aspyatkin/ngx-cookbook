@@ -4,7 +4,10 @@ module ChefCookbook
       unless node.run_state.key?('nginx')
         node.run_state['nginx'] = {
           'configure_flags' => [],
-          'configure_env_vars' => {}
+          'configure_env_vars' => {},
+          'user' => nil,
+          'group' => nil,
+          'log_dir' => nil
         }
       end
     end

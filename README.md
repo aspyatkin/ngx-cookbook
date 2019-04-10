@@ -20,6 +20,17 @@ end
 nginx_install 'default' do
   with_ipv6 false
   with_threads true
+  directives(
+    main: {
+      worker_processes: 'auto'
+    },
+    events: {
+      worker_connections: 1024
+    },
+    http: {
+      sendfile: 'on'
+    }
+  )
   action :run
 end
 

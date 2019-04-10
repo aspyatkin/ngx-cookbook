@@ -2,6 +2,7 @@ resource_name :nginx_install
 
 property :name, String, name_property: true
 
+property :manage_user, [TrueClass, FalseClass], default: true
 property :user, String, default: 'nginx'
 property :uid, Integer, default: 799
 property :group, String, default: 'nginx'
@@ -18,10 +19,16 @@ property :with_ipv6, [TrueClass, FalseClass], default: true
 property :with_threads, [TrueClass, FalseClass], default: false
 property :with_debug, [TrueClass, FalseClass], default: false
 
+property :directives, Hash, default: {}
+
 default_action :run
 
 action :run do
   ::ChefCookbook::NgxHelper.init_run_state(node)
+
+  node.run_state['nginx']['user'] = new_resource.user
+  node.run_state['nginx']['group'] = new_resource.group
+  node.run_state['nginx']['log_dir'] = new_resource.log_dir
 
   ohai_plugin 'nginx' do
     cookbook 'ngx'
@@ -32,17 +39,19 @@ action :run do
     resource :template
   end
 
-  group new_resource.group do
-    gid new_resource.gid
-    action :create
-  end
+  if new_resource.manage_user
+    group new_resource.group do
+      gid new_resource.gid
+      action :create
+    end
 
-  user new_resource.user do
-    uid new_resource.uid
-    group new_resource.group
-    shell '/bin/bash'
-    manage_home false
-    action :create
+    user new_resource.user do
+      uid new_resource.uid
+      group new_resource.group
+      shell '/bin/bash'
+      manage_home false
+      action :create
+    end
   end
 
   directory ::ChefCookbook::NgxHelper.conf_dir do
@@ -95,9 +104,7 @@ action :run do
       error_log_options: nil,
       pid: '/var/run/nginx.pid',
       conf_dir: ::ChefCookbook::NgxHelper.conf_dir,
-      context_main: {},
-      context_events: {},
-      context_http: {}
+      directives: new_resource.directives,
     )
     action :create
   end

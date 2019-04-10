@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2019-04-10
+### Added
+- Introduced a new `nginx_install` resource property: `directives`, which allows to write directives into the main Nginx configuration file.
+- Introduced a new `nginx_install` resource property: `manage_user`, which allows to skip creating a separate user for Nginx web server and to use a provided one instead.
+
+### Changed
+- Write some resource properties to `node.run_state['nginx']` so that they can be reused in other resources (e.g. `log_dir`).
+
 ## [2.0.0] - 2019-04-04
 ### Changed
 Major redesign. From now on this cookbook does not wrap [nginx](https://github.com/sous-chefs/nginx) cookbook and provides a set of LWRPs instead.

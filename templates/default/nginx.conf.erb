@@ -4,11 +4,27 @@ daemon off;
 error_log <%= @error_log %><%= @error_log_options.nil? ? '' : " #{@error_log_options}" %>;
 pid <%= @pid %>;
 
+<% if @directives.key?(:main) %>
+<% @directives[:main].each do |key, val| %>
+<%= key.to_s %> <%= val %>;
+<% end %>
+<% end %>
+
 events {
+  <% if @directives.key?(:events) %>
+  <% @directives[:events].each do |key, val| %>
+  <%= key.to_s %> <%= val %>;
+  <% end %>
+  <% end %>
 }
 
 http {
   default_type application/octet-stream;
+  <% if @directives.key?(:http) %>
+  <% @directives[:http].each do |key, val| %>
+  <%= key.to_s %> <%= val %>;
+  <% end %>
+  <% end %>
   include <%= @conf_dir %>/mime.types;
   include <%= @conf_dir %>/conf.d/*.conf;
   include <%= @conf_dir %>/sites-enabled/*;

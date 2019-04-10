@@ -18,8 +18,7 @@ action :create do
     source new_resource.template
     mode 0o644
     variables new_resource.variables
-    verify "#{::ChefCookbook::NgxHelper.executable} -t"
     action :create
-    notifies :reload, 'service[nginx]'
+    notifies :reload, 'service[nginx]', :delayed
   end
 end
