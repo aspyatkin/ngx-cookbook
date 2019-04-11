@@ -7,7 +7,8 @@ module ChefCookbook
           'configure_env_vars' => {},
           'user' => nil,
           'group' => nil,
-          'log_dir' => nil
+          'log_dir' => nil,
+          'pid' => nil
         }
       end
     end

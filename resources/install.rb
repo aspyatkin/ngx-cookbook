@@ -8,6 +8,7 @@ property :uid, Integer, default: 799
 property :group, String, default: 'nginx'
 property :gid, Integer, default: 799
 
+property :pid, String, default: '/var/run/nginx.pid'
 property :log_dir, String, default: '/var/log/nginx'
 property :install_dir_template, String, default: '/opt/nginx-%{version}'
 
@@ -29,6 +30,7 @@ action :run do
   node.run_state['nginx']['user'] = new_resource.user
   node.run_state['nginx']['group'] = new_resource.group
   node.run_state['nginx']['log_dir'] = new_resource.log_dir
+  node.run_state['nginx']['pid'] = new_resource.pid
 
   ohai_plugin 'nginx' do
     cookbook 'ngx'
@@ -62,7 +64,7 @@ action :run do
 
   directory new_resource.log_dir do
     owner new_resource.user
-    group new_resource.group
+    group node['root_group']
     mode 0o755
     recursive true
     action :create
@@ -102,9 +104,9 @@ action :run do
       group: new_resource.group,
       error_log: ::File.join(new_resource.log_dir, 'error.log'),
       error_log_options: nil,
-      pid: '/var/run/nginx.pid',
+      pid: new_resource.pid,
       conf_dir: ::ChefCookbook::NgxHelper.conf_dir,
-      directives: new_resource.directives,
+      directives: new_resource.directives
     )
     action :create
   end
