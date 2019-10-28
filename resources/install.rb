@@ -12,9 +12,9 @@ property :pid, String, default: '/var/run/nginx.pid'
 property :log_dir, String, default: '/var/log/nginx'
 property :install_dir_template, String, default: '/opt/nginx-%{version}'
 
-property :version, String, default: '1.15.10'
+property :version, String, default: '1.17.5'
 property :url_template, String, default: 'http://nginx.org/download/nginx-%{version}.tar.gz'
-property :checksum, String, default: 'b865743abd52bce4745d0f7e7fedde3cafbaaab617b022c105e3e4e456537c3c'
+property :checksum, String, default: '63ee35e15a75af028ffa1f995e2b9c120b59ef5f1b61a23b8a4c33c262fc10c3'
 
 property :with_ipv6, [TrueClass, FalseClass], default: true
 property :with_threads, [TrueClass, FalseClass], default: false
