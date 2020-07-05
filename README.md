@@ -18,7 +18,6 @@ end
 
 # install nginx
 nginx_install 'default' do
-  with_ipv6 false
   with_threads true
   directives(
     main: {

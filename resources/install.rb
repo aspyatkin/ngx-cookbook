@@ -12,11 +12,10 @@ property :pid, String, default: '/var/run/nginx.pid'
 property :log_dir, String, default: '/var/log/nginx'
 property :install_dir_template, String, default: '/opt/nginx-%{version}'
 
-property :version, String, default: '1.17.5'
+property :version, String, default: '1.19.0'
 property :url_template, String, default: 'http://nginx.org/download/nginx-%{version}.tar.gz'
-property :checksum, String, default: '63ee35e15a75af028ffa1f995e2b9c120b59ef5f1b61a23b8a4c33c262fc10c3'
+property :checksum, String, default: '44a616171fcd7d7ad7c6af3e6f3ad0879b54db5a5d21be874cd458b5691e36c8'
 
-property :with_ipv6, [TrueClass, FalseClass], default: true
 property :with_threads, [TrueClass, FalseClass], default: false
 property :with_debug, [TrueClass, FalseClass], default: false
 
@@ -144,13 +143,6 @@ action :run do
   pkg_names.each do |pkg_name|
     package pkg_name do
       action :install
-    end
-  end
-
-  if new_resource.with_ipv6
-    nginx_configure 'IPv6 support' do
-      flags %w[--with-ipv6]
-      action :append
     end
   end
 

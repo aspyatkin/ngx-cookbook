@@ -2,7 +2,7 @@ name 'ngx'
 maintainer 'Alexander Pyatkin'
 maintainer_email 'aspyatkin@gmail.com'
 license 'MIT'
-version '2.1.2'
+version '2.2.0'
 description 'Install and configure nginx web server'
 
 scm_url = 'https://github.com/aspyatkin/ngx-cookbook'

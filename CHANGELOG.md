@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2020-07-05
+### Changed
+- Update Nginx version to 1.19.0.
+
+### Removed
+- Remove `with_ipv6` property from `nginx_install` resource.
+
 ## [2.1.2] - 2019-10-28
 ### Changed
 - Update Nginx version to 1.17.5.
