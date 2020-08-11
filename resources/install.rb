@@ -10,6 +10,7 @@ property :gid, Integer, default: 799
 
 property :pid, String, default: '/var/run/nginx.pid'
 property :log_dir, String, default: '/var/log/nginx'
+property :error_log_options, [String, NilClass], default: nil
 property :install_dir_template, String, default: '/opt/nginx-%{version}'
 
 property :version, String, default: '1.19.0'
@@ -56,7 +57,7 @@ action :run do
   end
 
   directory ::ChefCookbook::NgxHelper.conf_dir do
-    mode 0o750
+    mode 0o755
     recursive true
     action :create
   end
@@ -102,7 +103,7 @@ action :run do
       user: new_resource.user,
       group: new_resource.group,
       error_log: ::File.join(new_resource.log_dir, 'error.log'),
-      error_log_options: nil,
+      error_log_options: new_resource.error_log_options,
       pid: new_resource.pid,
       conf_dir: ::ChefCookbook::NgxHelper.conf_dir,
       directives: new_resource.directives
