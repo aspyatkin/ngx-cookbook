@@ -1,8 +1,7 @@
 resource_name :nginx_install
+provides :nginx_install
 
-property :name, String, name_property: true
-
-property :manage_user, [TrueClass, FalseClass], default: true
+property :manage_user, [true, false], default: true
 property :user, String, default: 'nginx'
 property :uid, Integer, default: 799
 property :group, String, default: 'nginx'
@@ -10,15 +9,15 @@ property :gid, Integer, default: 799
 
 property :pid, String, default: '/var/run/nginx.pid'
 property :log_dir, String, default: '/var/log/nginx'
-property :error_log_options, [String, NilClass], default: nil
+property :error_log_options, [String, NilClass]
 property :install_dir_template, String, default: '/opt/nginx-%{version}'
 
-property :version, String, default: '1.19.0'
+property :version, String, default: '1.19.7'
 property :url_template, String, default: 'http://nginx.org/download/nginx-%{version}.tar.gz'
-property :checksum, String, default: '44a616171fcd7d7ad7c6af3e6f3ad0879b54db5a5d21be874cd458b5691e36c8'
+property :checksum, String, default: '7ae4dd020c41d3a5e1e6a8578fcc60e508e3e27e7668e845ddc87a05a775b50e'
 
-property :with_threads, [TrueClass, FalseClass], default: false
-property :with_debug, [TrueClass, FalseClass], default: false
+property :with_threads, [true, false], default: false
+property :with_debug, [true, false], default: false
 
 property :directives, Hash, default: {}
 
@@ -57,7 +56,7 @@ action :run do
   end
 
   directory ::ChefCookbook::NgxHelper.conf_dir do
-    mode 0o755
+    mode '0755'
     recursive true
     action :create
   end
@@ -65,14 +64,14 @@ action :run do
   directory new_resource.log_dir do
     owner new_resource.user
     group node['root_group']
-    mode 0o755
+    mode '0755'
     recursive true
     action :create
   end
 
   %w[sites-available sites-enabled conf.d includes].each do |leaf|
     directory ::File.join(::ChefCookbook::NgxHelper.conf_dir, leaf) do
-      mode 0o755
+      mode '0755'
       action :create
     end
   end
@@ -98,7 +97,7 @@ action :run do
     cookbook 'ngx'
     source 'nginx.conf.erb'
     notifies :reload, 'service[nginx]', :delayed
-    mode 0o644
+    mode '0644'
     variables(
       user: new_resource.user,
       group: new_resource.group,
@@ -114,11 +113,11 @@ action :run do
   sbin_path = ::File.join(install_dir, 'sbin', 'nginx')
 
   nginx_configure 'default' do
-    flags %W[
-      --prefix=#{install_dir}
-      --conf-path=#{conf_path}
-      --sbin-path=#{sbin_path}
-      --with-cc-opt=-Wno-error
+    flags [
+      "--prefix=#{install_dir}",
+      "--conf-path=#{conf_path}",
+      "--sbin-path=#{sbin_path}",
+      '--with-cc-opt=-Wno-error',
     ]
     action :prepend
   end
@@ -134,12 +133,7 @@ action :run do
     not_if { ::File.directory?(src_dir) }
   end
 
-  pkg_names = %w[
-    libpcre3
-    libpcre3-dev
-    zlib1g
-    zlib1g-dev
-  ]
+  pkg_names = %w[libpcre3 libpcre3-dev zlib1g zlib1g-dev]
 
   pkg_names.each do |pkg_name|
     package pkg_name do
@@ -149,14 +143,14 @@ action :run do
 
   if new_resource.with_threads
     nginx_configure 'thread_pool support' do
-      flags %w[--with-threads]
+      flags '--with-threads'
       action :append
     end
   end
 
   if new_resource.with_debug
     nginx_configure 'enable debugging log' do
-      flags %w[--with-debug]
+      flags '--with-debug'
       action :append
     end
   end
@@ -189,26 +183,26 @@ action :run do
           After: [
             'network.target',
             'remote-fs.target',
-            'nss-lookup.target'
-          ]
+            'nss-lookup.target',
+          ],
         },
         Service: {
           ExecStartPre: "#{::ChefCookbook::NgxHelper.executable} -t",
           ExecStart: ::ChefCookbook::NgxHelper.executable,
           ExecReload: '/bin/kill -s HUP $MAINPID',
           ExecStop: '/bin/kill -s QUIT $MAINPID',
-          PrivateTmp: 'true'
+          PrivateTmp: 'true',
         },
         Install: {
-          WantedBy: 'multi-user.target'
-        }
+          WantedBy: 'multi-user.target',
+        },
       }
     )
-    action %i[create enable]
+    action [:create, :enable]
   end
 
   service 'nginx' do
     supports status: true, restart: true, reload: true
-    action %i[start enable]
+    action [:start, :enable]
   end
 end

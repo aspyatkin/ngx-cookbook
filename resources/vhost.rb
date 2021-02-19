@@ -1,4 +1,5 @@
 resource_name :nginx_vhost
+provides :nginx_vhost
 
 property :vhost_name, String, name_property: true
 property :variables, Hash, default: {}

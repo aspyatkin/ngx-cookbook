@@ -8,7 +8,7 @@ module ChefCookbook
           'user' => nil,
           'group' => nil,
           'log_dir' => nil,
-          'pid' => nil
+          'pid' => nil,
         }
       end
     end

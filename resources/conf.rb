@@ -1,6 +1,5 @@
 resource_name :nginx_conf
-
-property :name, String, name_property: true
+provides :nginx_conf
 
 property :cookbook, String
 property :template, [String, Array], required: true
@@ -16,7 +15,7 @@ action :create do
   template ::File.join(::ChefCookbook::NgxHelper.conf_dir, 'conf.d', "#{new_resource.name}.conf") do
     cookbook new_resource.cookbook
     source new_resource.template
-    mode 0o644
+    mode '0644'
     variables new_resource.variables
     action :create
     notifies :reload, 'service[nginx]', :delayed
